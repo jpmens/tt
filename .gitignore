@@ -1,0 +1,11 @@
+*.[oa]
+*.dSYM
+*.pyc
+.DS_Store
+tags
+codesign.sh
+sundry/
+g
+*.make
+.make
+tt
