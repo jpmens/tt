@@ -9,3 +9,4 @@ g
 *.make
 .make
 tt
+mqtt2bean.conf

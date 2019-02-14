@@ -1,0 +1,13 @@
+[defaults]
+logfile = /tmp/x.log
+host	= localhost
+port	= 1883
+
+username = 
+password = 
+
+# cafile   = /tmp/mqtt/le-all.pem
+cafile   = 
+
+topics = owntracks/user/+   owntracks/jjolie/+
+
