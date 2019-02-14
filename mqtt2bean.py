@@ -81,7 +81,7 @@ def payload2location(topic, payload):
 
     # Payloads are either JSON or CSP.
     try:
-        item = json.loads(payload)
+        item = json.loads(payload.decode('utf8'))
         if type(item) != dict:
             return None
     except ValueError:
