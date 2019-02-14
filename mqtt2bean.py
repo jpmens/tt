@@ -65,7 +65,7 @@ _logger = setup_log(logfile_name)
 #  |_| |_| |_|\__, |\__|\__|_____|_.__/ \___|\__,_|_| |_|
 #                |_|                                     
 
-TUBE = 'positions'
+TUBE = 'totraccar'
 
 if sys.version < '3':
     import codecs
