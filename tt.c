@@ -5,6 +5,7 @@
 #include <curl/curl.h>
 #include <assert.h>
 #include <inttypes.h>
+#include <unistd.h>
 #include "beanstalk.h"
 
 /*
@@ -25,6 +26,7 @@
 
 #define URL "http://127.0.0.1:5144/"	/* OwnTracks protocol in Traccar */
 #define TUBENAME "totraccar"
+#define THROTTLE	(500 * 1000)	/* Microseconds */
 
 struct WriteThis {
 	const char *readptr;
@@ -157,6 +159,7 @@ int main(int argc, char **argv)
 			sleep(2);		/* Give traccar a breather */
 		}
 		bs_free_job(job);
+		usleep(THROTTLE);
 	}
 
 	bs_disconnect(handle);
