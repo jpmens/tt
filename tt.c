@@ -68,8 +68,10 @@ bool upload(CURL * cu, char *buf)
 	status = curl_easy_perform(cu);
 	if (status != 0) {
 		fprintf(stderr, "tt: unable to POST data: curl_strerror: %s\n", curl_easy_strerror(status));
+#ifdef fail_on_full
 		assert(status == 0);
 		/* unreached */
+#endid
 		return (false);
 	}
 	curl_easy_getinfo(cu, CURLINFO_RESPONSE_CODE, &code);
@@ -152,6 +154,7 @@ int main(int argc, char **argv)
 			assert(bs_delete(handle, job->id) == BS_STATUS_OK);
 		} else {
 			assert(bs_bury(handle, job->id, 0) == BS_STATUS_OK);
+			sleep(2);		/* Give traccar a breather */
 		}
 		bs_free_job(job);
 	}
