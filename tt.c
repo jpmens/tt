@@ -73,7 +73,7 @@ bool upload(CURL * cu, char *buf)
 #ifdef fail_on_full
 		assert(status == 0);
 		/* unreached */
-#endid
+#endif
 		return (false);
 	}
 	curl_easy_getinfo(cu, CURLINFO_RESPONSE_CODE, &code);
