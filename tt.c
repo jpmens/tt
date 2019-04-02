@@ -26,7 +26,7 @@
 
 #define URL "http://127.0.0.1:5144/"	/* OwnTracks protocol in Traccar */
 #define TUBENAME "totraccar"
-#define THROTTLE	(100 * 1000)	/* Microseconds */
+#define DEFAULT_THROTTLE	 (50)	/* Milliseconds */
 
 struct WriteThis {
 	const char *readptr;
@@ -122,8 +122,17 @@ int main(int argc, char **argv)
 	CURL *cu;
 	bool bf;
 	int handle = bs_connect("127.0.0.1", 11300);
+	static unsigned throttle = DEFAULT_THROTTLE;
+	useconds_t microseconds;
 
-	fprintf(stderr, "%s: starting. Sleeping 5s\n", *argv);
+	if (argc == 2) {
+		throttle = atoi(argv[1]);
+		throttle = (throttle < 1) ? DEFAULT_THROTTLE : throttle;
+	}
+
+	microseconds = throttle * 1000;
+
+	fprintf(stderr, "%s: starting with throttle=%dms. Sleeping 5s\n", throttle, *argv);
 	sleep(5);
 
 	assert(handle != BS_STATUS_FAIL);
@@ -159,7 +168,7 @@ int main(int argc, char **argv)
 			sleep(2);		/* Give traccar a breather */
 		}
 		bs_free_job(job);
-		usleep(THROTTLE);
+		usleep(microseconds);
 	}
 
 	bs_disconnect(handle);
