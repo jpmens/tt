@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 
 	microseconds = throttle * 1000;
 
-	fprintf(stderr, "%s: starting with throttle=%dms. Sleeping 5s\n", throttle, *argv);
+	fprintf(stderr, "%s: starting with throttle=%dms. Sleeping 5s\n", *argv, throttle);
 	sleep(5);
 
 	assert(handle != BS_STATUS_FAIL);
