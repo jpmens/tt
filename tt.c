@@ -26,7 +26,7 @@
 
 #define URL "http://127.0.0.1:5144/"	/* OwnTracks protocol in Traccar */
 #define TUBENAME "totraccar"
-#define DEFAULT_THROTTLE	 (50)	/* Milliseconds */
+#define DEFAULT_THROTTLE	 (100)	/* Milliseconds */
 
 struct WriteThis {
 	const char *readptr;
