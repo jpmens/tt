@@ -8,7 +8,7 @@ import time
 import socket
 import sys
 import os
-import io
+from io import StringIO
 import beanstalkc
 import json
 import errno
@@ -92,7 +92,8 @@ def payload2location(topic, payload):
         fieldnames = ['tid', 'tst', 't', 'lat', 'lon', 'cog', 'vel', 'alt', 'dist', 'trip' ]
 
         try:
-            csvreader = csv.DictReader(io.StringIO(u(payload)), fieldnames=fieldnames)
+            p = payload.decode("utf-8")
+            csvreader = csv.DictReader(StringIO(p), fieldnames=fieldnames)
             for r in csvreader:
                 item = {
                     '_type' : 'location',
