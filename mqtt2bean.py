@@ -8,6 +8,7 @@ import time
 import socket
 import sys
 import os
+import io
 import beanstalkc
 import json
 import errno
