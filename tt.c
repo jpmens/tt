@@ -10,7 +10,7 @@
 
 /*
  * 
- * tt.c (C)2018 by Jan-Piet Mens <jp@mens.de>
+ * tt.c (C)2018-2020 by Jan-Piet Mens <jp@mens.de>
  *
  *    _____ _____ 
  *   |_   _|_   _|
