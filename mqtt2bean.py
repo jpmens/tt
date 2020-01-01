@@ -20,7 +20,7 @@ from datetime import datetime
 import configparser
 
 __author__    = 'Jan-Piet Mens <jp@mens.de>'
-__copyright__ = 'Copyright 2017-2019 Jan-Piet Mens'
+__copyright__ = 'Copyright 2017-2020 Jan-Piet Mens'
 
 def setup_log(filename):
     logger = logging.getLogger('mqtt2bean')
