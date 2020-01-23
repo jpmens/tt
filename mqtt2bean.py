@@ -210,7 +210,7 @@ def on_disconnect(mosq, userdata, rc):
     print("Disconnected: ", reason)
     _logger.info("Disconnected: %s", reason)
 
-clientid = 'mqtt2bean-input-%s' % os.getpid()
+clientid = 'mqtt2bean-input'
 protocol=paho.MQTTv31  # 3
 protocol=paho.MQTTv311 # 4
 
