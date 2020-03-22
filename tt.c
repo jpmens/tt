@@ -146,6 +146,7 @@ int main(int argc, char **argv)
 	}
 
 	while (bs_reserve(handle, &job) == BS_STATUS_OK) {
+		char *datacopy;
 		assert(job);
 
 		/*
@@ -158,7 +159,12 @@ int main(int argc, char **argv)
 		printf("%s\n", job->data);
 		*/
 
-		bf = upload(cu, job->data);
+		datacopy = calloc(job->size + 1, sizeof(char));
+		assert(datacopy);
+
+		memcpy(datacopy, job->data, job->size);
+
+		bf = upload(cu, datacopy);
 
 		if (bf == true) {
 			// printf("delete job id: %" PRId64 "\n", job->id);
@@ -168,6 +174,7 @@ int main(int argc, char **argv)
 			sleep(2);		/* Give traccar a breather */
 		}
 		bs_free_job(job);
+		free(datacopy);
 		usleep(microseconds);
 	}
 
