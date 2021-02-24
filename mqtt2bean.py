@@ -171,9 +171,12 @@ def on_connect(mosq, userdata, flags, rc):
 def on_message(mosq, userdata, msg):
     bean = userdata
     topic = msg.topic
-    # print("%s (qos=%s, r=%s) %s" % (msg.topic, str(msg.qos), msg.retain, str(msg.payload)))
+    # print("%s (qos=%s, r=%d, l=%d) %s" % (msg.topic, str(msg.qos), msg.retain, len(msg.payload), str(msg.payload)))
 
     if msg.retain:
+        return
+
+    if len(msg.payload) == 0:
         return
 
     try:
