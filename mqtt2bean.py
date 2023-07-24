@@ -54,6 +54,10 @@ port = int(cf.get("defaults", "port"))
 cafile = cf.get("defaults", "cafile")
 username = cf.get("defaults", "username")
 password = cf.get("defaults", "password")
+try:
+    tubename = cf.get("defaults", "tubename")
+except:
+    tubename = 'totraccar'
 
 topics = topics.split()
 
@@ -66,7 +70,7 @@ _logger = setup_log(logfile_name)
 #  |_| |_| |_|\__, |\__|\__|_____|_.__/ \___|\__,_|_| |_|
 #                |_|                                     
 
-TUBE = 'totraccar'
+TUBE = tubename
 
 if sys.version < '3':
     import codecs
@@ -225,10 +229,10 @@ mqttc.on_message = on_message
 mqttc.on_connect = on_connect
 mqttc.on_disconnect = on_disconnect
 
-if len(cafile) is not 0:
+if len(cafile) != 0:
     mqttc.tls_set(cafile, cert_reqs=ssl.CERT_REQUIRED)
 
-if len(username) is not 0 or len(password) is not 0:
+if len(username) != 0 or len(password) != 0:
     mqttc.username_pw_set(username, password)
 
 _logger.info("connecting to %s:%d" % (host, port))
