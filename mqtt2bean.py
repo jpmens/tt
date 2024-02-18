@@ -20,7 +20,7 @@ from datetime import datetime
 import configparser
 
 __author__    = 'Jan-Piet Mens <jp@mens.de>'
-__copyright__ = 'Copyright 2017-2020 Jan-Piet Mens'
+__copyright__ = 'Copyright 2017-2024 Jan-Piet Mens'
 
 def setup_log(filename):
     logger = logging.getLogger('mqtt2bean')
@@ -166,11 +166,16 @@ def payload2location(topic, payload):
 
     return item
 
-def on_connect(mosq, userdata, flags, rc):
-    
-    for t in topics:
-        _logger.info("subscribing to %s" % (t))
-        mqttc.subscribe(t, 0)
+def on_connect(mosq, userdata, flags, reason_code, properties):
+    if reason_code.is_failure:
+        print(f"Failed to connect! flags:{flags} reason_code:{reason_code} properties:{properties}. loop_forever() will retry connection")
+        _logger.info(f"Failed to connect! flags:{flags} reason_code:{reason_code} properties:{properties}. loop_forever() will retry connection")
+    else:
+        print(f"Connected! flags:{flags} reason_code:{reason_code} properties:{properties}")
+        _logger.info(f"Connected! flags:{flags} reason_code:{reason_code} properties:{properties}")
+        for t in topics:
+            _logger.info("subscribing to %s" % (t))
+            mqttc.subscribe(t, 0)
 
 def on_message(mosq, userdata, msg):
     bean = userdata
@@ -203,19 +208,9 @@ def on_message(mosq, userdata, msg):
         return
 
 
-def on_disconnect(mosq, userdata, rc):
-
-    reasons = {
-       '0' : 'Connection Accepted',
-       '1' : 'Connection Refused: unacceptable protocol version',
-       '2' : 'Connection Refused: identifier rejected',
-       '3' : 'Connection Refused: server unavailable',
-       '4' : 'Connection Refused: bad user name or password',
-       '5' : 'Connection Refused: not authorized',
-    }
-    reason = reasons.get(rc, "code=%s" % rc)
-    print("Disconnected: ", reason)
-    _logger.info("Disconnected: %s", reason)
+def on_disconnect(client, userdata, flags, reason_code, properties):
+    print(f"Disconnected! flags:{flags} reason_code:{reason_code} properties:{properties}")
+    _logger.info(f"Disconnected! flags:{flags} reason_code:{reason_code} properties:{properties}")
 
 clientid = 'mqtt2bean-input-%d' % os.getpid()
 protocol=paho.MQTTv31  # 3
@@ -224,7 +219,7 @@ protocol=paho.MQTTv311 # 4
 beanstalk = beanstalkc.Connection('127.0.0.1', 11300)
 beanstalk.use(TUBE)
 
-mqttc = paho.Client(clientid, clean_session=True, userdata=beanstalk, protocol=protocol)
+mqttc = paho.Client(paho.CallbackAPIVersion.VERSION2, clientid, clean_session=True, userdata=beanstalk, protocol=protocol)
 mqttc.on_message = on_message
 mqttc.on_connect = on_connect
 mqttc.on_disconnect = on_disconnect
