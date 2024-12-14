@@ -155,9 +155,11 @@ def payload2location(topic, payload):
     if 'tid' not in item:
         item['tid'] = topic[-2]
 
-    # FIXME: should we remove these?
-    for elem in ['trip', 'dist']:
-        del(item[elem])
+    # FIXME: should we remove these? yes, particularly image because of
+    # an http status 413 (too large) for Traccar
+    for elem in ['trip', 'dist', 'imagename', 'image']:
+        if elem in item:
+            del(item[elem])
 
     item['topic']       = topic          # yes, add topic into payload
 
